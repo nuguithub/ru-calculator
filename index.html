@@ -135,7 +135,7 @@
             if (totalHours > 9) {
                 statusEl.innerHTML = `<span style="color:#dc2626; font-weight:700;">SOBRA</span>`;
                 warningEl.style.display = 'block';
-            } else if (totalHours > 7.5) {
+            } else if (totalHours >= 7.5) {
                 statusEl.innerHTML = `<span style="color:#ea580c; font-weight:700;">YAN BERIGUD</span>`;
                 warningEl.style.display = 'none';
             } else {
