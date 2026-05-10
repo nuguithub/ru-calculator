@@ -25,10 +25,10 @@
 
                 <div class="section-2">
                     <div class="input-group">
-                        <label>Hours in Duda University</label>
+                        <label>Duda University</label>
                         <div class="time-inputs">
                             <div class="time-field">
-                                <input type="number" id="uniHours" value="6" min="0">
+                                <input type="number" id="uniHours" value="1" min="0">
                                 <div class="small-label">Hours</div>
                             </div>
                             <div class="time-field">
@@ -39,10 +39,24 @@
                     </div>
 
                     <div class="input-group">
+                        <label>Assist</label>
+                        <div class="time-inputs">
+                            <div class="time-field">
+                                <input type="number" id="assistHours" value="1" min="0">
+                                <div class="small-label">Hours</div>
+                            </div>
+                            <div class="time-field">
+                                <input type="number" id="assistMinutes" value="0" min="0" max="59">
+                                <div class="small-label">Minutes</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
                         <label>Break Time (Max 1.5 hours)</label>
                         <div class="time-inputs">
                             <div class="time-field">
-                                <input type="number" id="breakHours" value="0" min="0" max="1">
+                                <input type="number" id="breakHours" value="1" min="0" max="1">
                                 <div class="small-label">Hours</div>
                             </div>
                             <div class="time-field">
@@ -54,12 +68,12 @@
                     <button onclick="calculateRU()">Calculate Total RU</button>
 
                     <div id="result" class="result">
-                        <p style="color: #666; font-weight: 500;">Total Daily RU</p>
+                        <p style="color: #666; font-weight: 500;">Total Daily RU + Break</p>
                         <div id="totalHours" class="total-hours">0 hrs</div>
                         <div id="status" style="font-size: 18px; margin: 12px 0;"></div>
                         
                         <div id="warning" class="warning">
-                            ! Lampas RU mo! !
+                            Lampas RU mo!
                         </div>
                     </div>
                 </div>
@@ -83,7 +97,7 @@
                 const div = document.createElement('div');
                 div.className = 'workload-section';
                 div.innerHTML = `
-                    <div class="workload-title">Workload ${i}</div>
+                    <div class="workload-title">WORKLOAD ${i}</div>
                     <div class="time-inputs">
                         <div class="time-field">
                             <input type="number" id="w${i}h" value="1" min="0">
@@ -102,9 +116,15 @@
         function calculateRU() {
             const numWorkloads = parseInt(document.getElementById('numWorkloads').value) || 1;
 
+            // Duda University
             const uniH = parseInt(document.getElementById('uniHours').value) || 0;
             const uniM = parseInt(document.getElementById('uniMinutes').value) || 0;
             const uniTotal = uniH + (uniM / 60);
+
+            // Assist
+            const astH = parseInt(document.getElementById('assistHours').value) || 0;
+            const astM = parseInt(document.getElementById('assistMinutes').value) || 0;
+            const astTotal = astH + (astM / 60);
 
             // Break time
             let breakH = parseInt(document.getElementById('breakHours').value) || 0;
@@ -124,7 +144,7 @@
                 workloadsTotal += h + (m / 60);
             }
 
-            const totalHours = uniTotal + workloadsTotal + breakTotal;
+            const totalHours = uniTotal + astTotal + workloadsTotal + breakTotal;
 
             document.getElementById('result').style.display = 'block';
             document.getElementById('totalHours').textContent = totalHours.toFixed(1) + " hrs";
@@ -135,7 +155,7 @@
             if (totalHours > 9) {
                 statusEl.innerHTML = `<span style="color:#dc2626; font-weight:700;">SOBRA</span>`;
                 warningEl.style.display = 'block';
-            } else if (totalHours >= 7.5) {
+            } else if (totalHours > 7.5) {
                 statusEl.innerHTML = `<span style="color:#ea580c; font-weight:700;">YAN BERIGUD</span>`;
                 warningEl.style.display = 'none';
             } else {
