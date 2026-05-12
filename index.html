@@ -9,7 +9,15 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>RU Calculator</h1>
+            <div class="title-head">
+                <h1>RU Calculator</h1>
+                <div class="input-group">
+                    <div class="color-inputs">
+                        <input type="color" id="customColor" value="#c05314" onchange="updateTheme()">
+                        <input type="text" id="colorHex" placeholder="#c05314" maxlength="7" onchange="updateThemeFromText()">
+                    </div>
+                </div>
+            </div>
         </div>
         
         <div class="form">
@@ -88,6 +96,35 @@
     </div>
 
     <script>
+
+        function updateTheme() {
+    const colorPicker = document.getElementById('customColor');
+    const colorText = document.getElementById('colorHex');
+    const color = colorPicker.value;
+    
+    colorText.value = color;
+    
+    // Update CSS variables
+    document.documentElement.style.setProperty('--pri-clr', color);
+    
+    // Update placeholder
+    colorText.placeholder = color;
+}
+
+function updateThemeFromText() {
+    const colorText = document.getElementById('colorHex');
+    const colorPicker = document.getElementById('customColor');
+    let color = colorText.value;
+    
+    // Validate hex color
+    if (/^#[0-9A-F]{6}$/i.test(color)) {
+        colorPicker.value = color;
+        document.documentElement.style.setProperty('--pri-clr', color);
+    } else {
+        colorText.value = colorPicker.value; // Reset to valid color
+    }
+}
+
         function generateWorkloadInputs() {
             const num = parseInt(document.getElementById('numWorkloads').value) || 1;
             const container = document.getElementById('workloadsContainer');
